@@ -20,7 +20,7 @@ import okhttp3.internal.Util;
 import retrofit2.Converter;
 
 
-public class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T>{
+public class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
 
     private final Gson gson;
     private final TypeAdapter<T> adapter;
@@ -33,17 +33,15 @@ public class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T>{
     @Override
     public T convert(ResponseBody value) throws IOException {
         String body = value.string();
-        try {
-            JSONObject jsonObject = new JSONObject(body);
-            if(jsonObject.optInt("status") == 200){
-                JSONObject jsonObject1 = new JSONObject();
-//                jsonObject1.put(HttpData.RESPONSE_CODE,jsonObject.optInt(HttpData.RESPONSE_CODE));
-//                jsonObject1.put(HttpData.RESPONSE_MESSAGE,jsonObject.optString(HttpData.RESPONSE_MESSAGE));
-                body = jsonObject1.toString();
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            JSONObject jsonObject = new JSONObject(body);
+//            if(jsonObject.optInt("status") == 200){
+//                JSONObject jsonObject1 = new JSONObject();
+//                body = jsonObject1.toString();
+//            }
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
 
         /**
          * 因为你只能对ResponseBody读取一次 ,

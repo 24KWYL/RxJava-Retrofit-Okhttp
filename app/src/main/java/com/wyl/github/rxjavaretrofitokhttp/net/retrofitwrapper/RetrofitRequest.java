@@ -13,7 +13,7 @@ public class RetrofitRequest {
 
     private Retrofit retrofit;
     private RetrofitService retrofitService;
-    private static RetrofitRequest INSTANCE;
+    private static volatile RetrofitRequest INSTANCE;
 
     public RetrofitRequest(){
         retrofit = new Retrofit.Builder()

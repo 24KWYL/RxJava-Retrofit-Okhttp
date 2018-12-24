@@ -3,6 +3,7 @@ package com.wyl.github.rxjavaretrofitokhttp.net.retrofitwrapper;
 import android.text.TextUtils;
 
 import com.wyl.github.rxjavaretrofitokhttp.net.HeaderUtils;
+import com.wyl.github.rxjavaretrofitokhttp.net.api.Api;
 
 import java.io.IOException;
 import java.util.Map;
@@ -16,29 +17,14 @@ import okhttp3.Response;
 
 public class RetrofitUtil {
     private static final int DEFAULT_TIMEOUT = 10;
-    public static int flagTestOrOnline = 0; // =0表示默认环境 =1表示测试 =2表示线上
 
-    /**
-     * 获取baseUrl 可以在测试的时候修改flagTestOrOnline 切换环境
-     * 0 默认环境
-     * 1 测试环境
-     * 2 正式环境
-     */
-    public static String getBaseUrl(){
-//        switch (flagTestOrOnline){
-//            case 0:
-//                return Api.BASE_URL;
-//            case 1:
-//                return Api.TEST_BASE_URL;
-//            case 2:
-//                return Api.REAL_BASE_URL;
-//            default: return Api.BASE_URL;
-//        }
-        return "";
+    public static String getBaseUrl() {
+        return Api.baseUrl;
     }
 
     /**
      * 修改http头文件
+     *
      * @return
      */
     public static OkHttpClient genericClient() {
@@ -47,11 +33,13 @@ public class RetrofitUtil {
                     @Override
                     public Response intercept(Chain chain) throws IOException {
                         Request.Builder builder = chain.request().newBuilder();
-                        Map<?,?> headerMap = HeaderUtils.generalHeaders();
-                        for(Map.Entry<?,?> entry : headerMap.entrySet()){
-                            String key = String.valueOf(entry.getKey());
-                            if(!TextUtils.isEmpty(key)){
-                                builder.addHeader(key, String.valueOf(entry.getValue()));
+                        Map<?, ?> headerMap = HeaderUtils.generalHeaders();
+                        if (headerMap != null) {
+                            for (Map.Entry<?, ?> entry : headerMap.entrySet()) {
+                                String key = String.valueOf(entry.getKey());
+                                if (!TextUtils.isEmpty(key)) {
+                                    builder.addHeader(key, String.valueOf(entry.getValue()));
+                                }
                             }
                         }
                         Request request = builder.build();
