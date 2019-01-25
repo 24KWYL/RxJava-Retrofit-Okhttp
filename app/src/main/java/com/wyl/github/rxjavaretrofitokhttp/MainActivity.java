@@ -29,55 +29,34 @@ public class MainActivity extends AppCompatActivity {
         context = this;
         getContent = (TextView) findViewById(R.id.get_content);
         postContent = (TextView) findViewById(R.id.post_content);
-        userName= (EditText) findViewById(R.id.user_name);
-        password= (EditText) findViewById(R.id.password);
+        userName = (EditText) findViewById(R.id.user_name);
+        password = (EditText) findViewById(R.id.password);
         findViewById(R.id.tv_get).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RetrofitRequest.getInstance().doHttps(RetrofitRequest.getInstance().retrofitService.getChapters(), new Subscriber<ChaptersBean>() {
+                findViewById(R.id.btn_post).setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onCompleted() {
+                    public void onClick(View v) {
+                        RetrofitRequest.getInstance().doHttps(RetrofitRequest.getInstance().retrofitService.register(userName.getText().toString(), password.getText().toString(), password.getText().toString()), new Subscriber<LoginData>() {
+                            @Override
+                            public void onCompleted() {
 
-                    }
+                            }
 
-                    @Override
-                    public void onError(Throwable e) {
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.e("wyl", e.toString());
+                            }
 
-                    }
-
-                    @Override
-                    public void onNext(ChaptersBean chaptersBean) {
-                        getContent.setText(chaptersBean.toString());
-                    }
-                });
-            }
-        });
-
-        findViewById(R.id.btn_post).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RetrofitRequest.getInstance().doHttps(RetrofitRequest.getInstance().retrofitService.register(userName.getText().toString(), password.getText().toString(), password.getText().toString()), new Subscriber<LoginData>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e("wyl", e.toString());
-                    }
-
-                    @Override
-                    public void onNext(LoginData o) {
-                        postContent.setText(o.toString());
+                            @Override
+                            public void onNext(LoginData o) {
+                                postContent.setText(o.toString());
+                            }
+                        });
                     }
                 });
             }
         });
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 }
